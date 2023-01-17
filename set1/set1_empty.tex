@@ -66,56 +66,60 @@ Answer each of the following problems with 1-2 short sentences.
   What is a hypothesis set?
 \end{problem}
 \begin{solution}
-  
+  The hypothesis set is the space of all possible options for which a set of inputs can be mapped to a set of outputs. In other words it describes the space of both all the possible input options and output options together.
 \end{solution}
 
 \begin{problem}[2]
   What is the hypothesis set of a linear model?
 \end{problem}
 \begin{solution}
+  For a linear model, the hypothesis set would be all inputs that can be described by vectors $x$, $w$, and $b$ in this formula:
   
+  $$f(x|w,b) = w^Tx-b$$
 \end{solution}
 
 \begin{problem}[2]
   What is overfitting?
 \end{problem}
 \begin{solution}
-  
+  Overfitting is an issue of deep learning models in which the model, usually due to high variation in the training set or if the training set is too sparse, is heavily influenced by the noise within that set. It becomes highly specific to the training set and is not generalizable to other test data.
 \end{solution}
 
 \begin{problem}[2]
   What are two ways to prevent overfitting?
 \end{problem}
 \begin{solution}
-  
+  1. You can always validate that the model is working by running it with test data and getting an error estimate. If theres an inappropriate amount of error(high variance) the model is flawed.//
+  2. If you don't have a test set, you can always split the training set and holdout a subset for testing and error estimation.
 \end{solution}
 
 \begin{problem}[2]
   What are training data and test data, and how are they used differently? Why should you never change your model based on information from test data?
 \end{problem}
 \begin{solution}
-  
+  Modifying your model based on test data effectively redefines (in philosophy) that test data as training data. Were you to re-run your model with that new incorporated training(previously test) data would cause the model to suffer from confirmation bias and inappropriately skew it.
 \end{solution}
 
 \begin{problem}[2]
   What are the two assumptions we make about how our dataset is sampled?
 \end{problem}
 \begin{solution}
-  
+  1. That the data is sampled independently from the same distribution and is thus, representative.\\
+  2. The training set is large enough to accurately describe the ground truth distribution.
 \end{solution}
 
 \begin{problem}[2]
   Consider the machine learning problem of deciding whether or not an email is spam. What could $X$, the input space, be? What could $Y$, the output space, be?
 \end{problem}
 \begin{solution}
-  
+  The input space could be a vector with binary (0 or 1) elements with each element corresponding to the presence or absence of a word. The output space can also be binary(in this case we use +1 or -1 though this can just be convention) to indicate whether the whole email is spam or not spam.
 \end{solution}
 
 \begin{problem}[2]
   What is the $k$-fold cross-validation procedure?
 \end{problem}
 \begin{solution}
-  
+    With limited data, it helps to separate the training set into k parts. k-1 will be used for training and that last subset will be used for testing. This can be done iteratively, holding out each subset in k and training with the rest. In this way you can get a sense of the error associated with all parts of the training data without need for separate test data.
 \end{solution}
 
 
@@ -143,7 +147,30 @@ Answer each of the following problems with 1-2 short sentences.
 \end{problem}
 
 \begin{solution}
+  Starting from:  
+  $$E_{out}(fs) = E_x[(fs(x)-y(x))^2]$$
+and 
+  $$F_(x) = E_s[fs(x)]$$
+We can get to 
+  $$F(x) = E_s[E_x[(fs(x)-y(x))^2] = E_x[E_s[(fs(x)-y(x))^2]]$$
+So let's isolate the $E_s$ part:
+  $$E_s[(fs(x)-y(x))^2] = E_s[(fs(x)-F(x) + F(x) - y(x))^2]$$
   
+  $$= E_s[(fs(x)-F(x))^2 + (F(x) - y(x))^2 + 2(fs(x)-F(x)(F(x) - y(x))]$$
+
+  $$= E_s[(fs(x)-F(x))^2] + (F(x) - y(x))^2$$
+
+  The first portion, 
+  
+  $$E_s[(fs(x)-F(x))^2]$$
+
+  we define as Var(x), and the second
+
+  $$(F(x) - y(x))^2$$
+
+  we define as Bias(x), thus we have that:
+
+  $$E_s[E_{out}(fs(x)] = E_x[Var(x) + Bias(x)]$$
 \end{solution}
 
 In the following problems you will explore the bias-variance tradeoff by producing learning curves for polynomial regression models.
@@ -173,41 +200,49 @@ The dataset \texttt{bv_data.csv} is provided and has a header denoting which col
 
 \end{problem}
 \begin{solution}
+https://colab.research.google.com/drive/1Ruu4LfY8ZMlcTOPT_B0JJLydgZd14gW4?usp=sharing
+
+\includegraphics{set1/images/Unknown-6.png}\\
+\includegraphics{set1/images/Unknown-7.png}\\
+\includegraphics{set1/images/Unknown-8.png}\\
+\includegraphics{set1/images/Unknown-9.png}
+
+
   \end{solution}
 
 \begin{problem}[3]
   Based on the learning curves, which polynomial regression model (i.e. which degree polynomial) has the highest bias? How can you tell?
 \end{problem}
 \begin{solution}
-
+The bias is highest in the 1st degree polynomial fit since the overall training error has a higher baseline than the rest
 \end{solution}
 
 \begin{problem}[3]
   Which model has the highest variance? How can you tell?
 \end{problem}
 \begin{solution}
-  
+  The 12th degree polynomial fit has the highest variance since the test error is much higher than the rest and relative to the training set
 \end{solution}
 
 \begin{problem}[3]
   What does the learning curve of the quadratic model tell you about how much the model will improve if we had additional training points?
 \end{problem}
 \begin{solution}
-
+The learning curve error becomes inconsequential after a certain number of data points. Thus, incorporating more data into the training model doesn't necessarily increase its accuracy and may be an inefficient use of resources.
 \end{solution}
 
 \begin{problem}[3]
   Why is training error generally lower than validation error?
 \end{problem}
 \begin{solution}
-  
+  Because the model is literally trained on the training set. Therefore, the model will always recapitulate the training data more robustly. It's like asking "Why does a baby like their Mom better than a stranger?". 
 \end{solution}
 
 \begin{problem}[3]
   Based on the learning curves, which model would you expect to perform best on some unseen data drawn from the same distribution as the training data, and why?
 \end{problem}
 \begin{solution}
-  
+  The 6th degree polynomial fit has the lowest overall error and the validation error closely approximates the training error after maybe 70 data points, therefore would perform the best.
 \end{solution}
 
 
@@ -231,6 +266,25 @@ Stochastic gradient descent (SGD) is an important optimization method in machine
   
 \end{hint}
 \begin{solution}
+Starting from above and let's imagine we're on some kind of convex curve. Now let's put our pies in the sky(that's where I like 'em) and assume that $\nabla f(x') \not= 0$ shocking right? \\
+
+We can define a vector $p=-\nabla f(x')$ and say this:
+
+$$p^T \nabla f(x') = -|\nabla f(x')|^2 < 0$$\\
+
+we can then walk along our curve some $t \in [0,T]$ (we know we can do this because its continuous differentiable near x' so ha).
+\\
+then we have:
+$$p^T \nabla f(x'+tp) < 0$$
+
+and by using the theorem (Taylor's Version) we can rewrite this as
+
+$$p^T \nabla f(x'+tp) = f(x') + t p^T \nabla f(x'+tp)$$
+
+this lends itself to saying that:
+$$f(x'+tp) < f(x')$$ for ALL $t \in (0,t)$
+
+So we've found that at an x' and moving some distance away from this x' in a specific direction will lead to a decrease in f, suggesting that this is NOT a local minimum at x'. This is called a contradiction, the presence of a contradiction proves the rule.
 
 \end{solution}
 
@@ -246,7 +300,10 @@ Linear regression learns a model of the form:
   Include an additional element in $\mathbf{w}$ and $\mathbf{x}$.
 \end{hint}
 \begin{solution}
-  
+  We can add some term $w_b$ and $x_b$ which can be found in the vectors $w$ and $x$ such that some part of the operation for $w^Tx$ is:
+  $$w_b x_b + w_1 x_1 + ... + w_d x_d$$
+
+  If we set $x_b = 1$ then we can generate a bias term specified purely by the weight vector.
 \end{solution}
 
 Linear regression learns a model by minimizing the squared loss function $L$, which is the sum across all training data $\{(\mathbf{x}_1, y_1),\cdots,(\mathbf{x}_N, y_N)\}$ of the squared difference between actual and predicted output values:
@@ -256,7 +313,25 @@ Linear regression learns a model by minimizing the squared loss function $L$, wh
   Both GD and SGD uses the gradient of the loss function to make incremental adjustments to the weight vector $\mathbf{w}$. Derive the gradient of the squared loss function with respect to $\mathbf{w}$ for linear regression. Explain the difference in computational complexity in 1 update of the weight vector between GD and SGD. 
 \end{problem}
 \begin{solution}
-  
+  We can take the derivative of L(f):
+    $$L(f) = \sum_{i=1}^N (y_i - \mathbf{w}^T\mathbf{x}_i)^2$$
+
+    Lets say 
+    $$h = y_i - \mathbf{w}^T\mathbf{x}_i$$
+    and
+    $$h' = -x_i$$
+
+    $$L(f) = \sum_{i=1}^N (h)^2$$
+
+    via chain rule
+    $$L' (f) = 2(h) h'$$
+    
+    $$L' (f)=\sum^{N}_{i=1} 2(y_i-w^Tx_i)(- x_i) $$
+    $$L' (f)=\sum^{N}_{i=1} 2x_i(w^Tx_i-y_i)$$
+
+    \\
+
+    The difference in complexity is simply iterative. For N data points, GD requires N calculations of L'(f) whereas with SGD, we need some random subset of N in order to compute a similar update.
 \end{solution}
 
 The following few problems ask you to work with the first of two provided Jupyter notebooks for this problem, \texttt{3_notebook_part1.ipynb}, which includes tools for gradient descent visualization. This notebook utilizes the files \texttt{sgd_helper.py} and \texttt{multiopt.mp4}, but you should not need to modify either of these files. 
@@ -274,14 +349,15 @@ For your implementation of problems D-F, \textbf{do not} consider the bias term.
   \end{itemize}
 \end{problem}
 \begin{solution}
-See code. %This does not need to be changed.
+See code.\\ %This does not need to be changed.
+https://drive.google.com/file/d/1HkxEZQL79CDc4ehbmczhO_YaVt3U6LXA/view?usp=sharing
 \end{solution}
 
 \begin{problem}[2]
   Run the visualization code in the notebook corresponding to problem D. How does the convergence behavior of SGD change as the starting point varies? How does this differ between datasets 1 and 2? Please answer in 2-3 sentences.
 \end{problem}
 \begin{solution}
-
+Both datasets feature SGD convergence towards the global minimum of the system regardless of the starting point. It's important to note that the system is a simple convex plane in both cases and therefore has only one minimum, respectively.
 \end{solution}
 
 \begin{problem}[6]
@@ -289,7 +365,9 @@ See code. %This does not need to be changed.
 \end{problem}
 
 \begin{solution}
-
+\includegraphics{set1/images/Unknown-10.png}\\ 
+\\
+As $\eta$ changes we see that the time it takes for full convergence takes much longer, therefore may not be reasonable in the time frame of our model.
 \end{solution}
 
 
@@ -310,13 +388,20 @@ For your implementation of problems G-I, \textbf{do} consider the bias term usin
   %$\epsilon$ here is a measure of how much change in error there is compared to the initial error in the epoch. Calculate the change in error every epoch and compare it to the change in error from the first epoch. If new change/initial change is less than $\epsilon$, stop the training. $\eta$ is the factor by which you multiply the gradient in each step of the descent, and $\mathbf{w}$ is the initial weight vector.
 \end{problem}
 \begin{solution}
+https://drive.google.com/file/d/1K_gI8mB9AxjRMh4mdWWp5sLbuzAaGdMm/view?usp=sharing
+\\
+\\
+The final weights are:
+[ -5.97853793   3.988393   -11.85700887   8.91129577  -0.22789823]
 \end{solution}
 
 \begin{problem}[2]
   Perform SGD as in the previous problem for each learning rate $\eta$ in \[\{e^{-10}, e^{-11}, e^{-12}, e^{-13}, e^{-14}, e^{-15}\},\] and calculate the training error at the beginning of each epoch during training.  On a single plot, show training error vs. number of epochs trained for each of these values of $\eta$. Explain what is happening.
 \end{problem}
 \begin{solution}
-  
+  \includegraphics{set1/images/Unknown-11.png}\\
+  \\
+  We can see that the model converges fastest with the highest learning rate and that all must reach convergence within 1000 epochs
 \end{solution}
 
 
@@ -324,7 +409,11 @@ For your implementation of problems G-I, \textbf{do} consider the bias term usin
   The closed form solution for linear regression with least squares is \[\mathbf{w} = \left(\sum_{i=1}^N \mathbf{x_i}\mathbf{x_i}^T\right)^{-1}\left(\sum_{i=1}^N \mathbf{x_i}y_i\right).\]  Compute this analytical solution.  Does the result match up with what you got from SGD?
 \end{problem}
 \begin{solution}
- 
+   The analytically computed weights are:
+  
+  [ -5.99157048   4.01509955 -11.93325972   8.99061096  -0.31644251]
+  \\
+  This is quite close to the approximation via SGD however there is small variation in the output.
 \end{solution}
 
 Answer the remaining questions in 1-2 short sentences.
@@ -333,14 +422,14 @@ Answer the remaining questions in 1-2 short sentences.
   Is there any reason to use SGD when a closed form solution exists?
 \end{problem}
 \begin{solution}
-  
+In this case there is no need to compute the SGD since it is computationall expensive. A closed form would always preclude the need for optimization.
 \end{solution}
 
 \begin{problem}[2]
   Based on the SGD convergence plots that you generated earlier, describe a stopping condition that is more sophisticated than a pre-defined number of epochs.
 \end{problem}
 \begin{solution}
-  
+  A more appropriate approach, depending on how computationally heavy the optimization is, is to define a maximum training error. As long as the error is less than that maximum threshold that you deem acceptable, that would be more appropriate as the end goal of this approach is to get a working model.
 \end{solution}
 
 
@@ -406,7 +495,12 @@ The following few problems ask you to work with the provided Jupyter notebook fo
   
 \end{problem}
 \begin{solution}
-
+https://drive.google.com/file/d/1xQSa-HrBEE2z4ReVrmHtzkc1LTP05rCs/view?usp=sharing\\
+\\
+\includegraphics{set1/images/Unknown-14.png}
+\\
+\\
+\includegraphics[width=10cm, height=10cm]{set1/images/Unknown-13.png}
 
 \end{solution}
 
@@ -419,19 +513,26 @@ The following few problems ask you to work with the provided Jupyter notebook fo
 
 \end{problem}
 \begin{solution}
-
+For a 2D space, the minimum is 4 points assuming non-colinearity in 3. Imagine a 2 points in a 2D space and let's assume they belong to the positive group. Now let's draw a line connecting these two points. Add another two points on *either side* of this line and make these the negative group. You've now created a 2D space where the two groups are not linearly separable no matter what line you draw.\\
+\\
+Same rules as above, the minimum would be 5. Let's draw 3 points in space corresponding to the positive group. Now draw a plane connecting these 3 points. Once again, draw 2 points, each normal to one face of the plane (i.e. one up, one down). We can see another set of nonlinearly separable points.
+\\
+We can generalize this to say that $N+2$ is the minimum number of points where $N$ is the dimension of the space. I can't and won't provide proof. :)
 \end{solution}
 
 \begin{problem}[2]
   Run the visualization code in the Jupyter notebook section corresponding to question C (report your plots). Assume a dataset is \emph{not} linearly separable. Will the Perceptron Learning Algorithm ever converge? Why or why not?
 \end{problem}
 \begin{solution}
-
+\includegraphics[width=10cm, height=10cm]{set1/images/Unknown-15.png}\\
+\\
+We can see that this non linearly separable group will not converge. There will always be some number of points that are misclassified leading to error in our algorithm and thus, iterative updates.
 \end{solution}
 
 \begin{problem}[2]
 How does the convergence behavior of the weight vector differ between the perceptron and SGD algorithms? Think of comparing, at a high level, their smoothness and whether they always converge (You don't need to implement any code for this problem.)
 \end{problem}
 \begin{solution}
+The perceptron works on non-continuous functions due to the nature of using a subgradient, thus not requiring linear separability to run and optimize. Conversely, the SGD algorithm relies on a continuously differentiable function(smooth) in order to solve and optimize. In this case the smoother the better.
 \end{solution}
 \end{document}
